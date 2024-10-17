@@ -4,7 +4,7 @@ class DonutTile extends StatelessWidget {
   final String donutFlavor;
   final String donutPrice;
   final dynamic donutColor;
-  final String imageName; // Cambiado de String a Dynamic
+  final String imageName;
 
   final double borderRadius = 24;
 
@@ -25,41 +25,102 @@ class DonutTile extends StatelessWidget {
           color: donutColor[50],
           borderRadius: BorderRadius.circular(borderRadius),
         ),
-        child: Column(
+        child: Stack(
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
+            // Precio en la esquina superior derecha
+            Positioned(
+              top: 0,
+              right: 0,
+              child: Container(
+                decoration: BoxDecoration(
+                  color: donutColor[100],
+                  borderRadius: BorderRadius.only(
+                    topRight: Radius.circular(borderRadius),
+                    bottomLeft: Radius.circular(borderRadius),
+                  ),
+                ),
+                padding: const EdgeInsets.symmetric(
+                  vertical: 8,
+                  horizontal: 18,
+                ),
+                child: Text(
+                  '\$$donutPrice',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18,
+                    color: donutColor[800],
+                  ),
+                ),
+              ),
+            ),
+            // Contenido centrado
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Container(
-                  decoration: BoxDecoration(
-                    color: donutColor[100],
-                    borderRadius: BorderRadius.only(
-                      topRight: Radius.circular(borderRadius),
-                      bottomLeft: Radius.circular(borderRadius),
-                    ),
+                // Imagen del donut
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 40,
+                    vertical: 12,
                   ),
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 8, horizontal: 18),
+                  child: Image.asset(imageName),
+                ),
+                // Texto del sabor del donut
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
                   child: Text(
-                    '\$$donutPrice',
-                    style: TextStyle(
+                    donutFlavor,
+                    style: const TextStyle(
+                      fontSize: 20,
                       fontWeight: FontWeight.bold,
-                      fontSize: 18,
-                      color: donutColor[800],
+                      color: Colors.black,
                     ),
+                    textAlign: TextAlign.center,
                   ),
-                )
+                ),
+                const SizedBox(height: 4), // Espacio entre los textos
+                // Texto adicional "Dunkin's"
+                const Text(
+                  "Dunkin's",
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: Colors.black,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 10), // Espacio entre texto y botones
+
+                // Row con botón de favorito y "+" icono
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 40),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      // Botón de favorito (corazón)
+                      IconButton(
+                        onPressed: () {
+                          // Acción del botón de favorito
+                        },
+                        icon: const Icon(Icons.favorite_border),
+                        color: Colors.pink[400],
+                      ),
+                      // Ícono "+" 
+                      GestureDetector(
+                        onTap: () {
+                          // Acción del botón "+"
+                        },
+                        child: Icon(
+                          Icons.add, // Ícono de "+"
+                          size: 30, // Tamaño del ícono
+                          color: Colors.grey[800],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               ],
             ),
-            // Imagen de la dona
-            Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 40, vertical: 12),
-              child: Image.asset(imageName),
-            ),
-            // Nombre de la dona
-            Text(donutFlavor, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.black,),),
-            const Text('Dunkin´s', style: TextStyle(fontSize: 14, color: Colors.grey),),
           ],
         ),
       ),

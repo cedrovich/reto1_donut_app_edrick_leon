@@ -15,19 +15,19 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-
   List<Widget> myTabs = [
-  //Donut Tab
-  const MyTab(iconPath: 'lib/icons/donut.png'),
-  //Burger Tab
-  const MyTab(iconPath: 'lib/icons/burger.png'),
-  //Smoothie Tab
-  const MyTab(iconPath: 'lib/icons/smoothie.png'),
-  //Pancake Tab
-  const MyTab(iconPath: 'lib/icons/pancakes.png'),
-  //Pizza Tab
-  const MyTab(iconPath: 'lib/icons/pizza.png'),
-];
+    // Donut Tab
+    const MyTab(iconPath: 'lib/icons/donut.png', tabName: 'Donuts'), // Nombre agregado
+    // Burger Tab
+    const MyTab(iconPath: 'lib/icons/burger.png', tabName: 'Burgers'), // Nombre agregado
+    // Smoothie Tab
+    const MyTab(iconPath: 'lib/icons/smoothie.png', tabName: 'Smoothies'), // Nombre agregado
+    // Pancake Tab
+    const MyTab(iconPath: 'lib/icons/pancakes.png', tabName: 'Pancakes'), // Nombre agregado
+    // Pizza Tab
+    const MyTab(iconPath: 'lib/icons/pizza.png', tabName: 'Pizza'), // Nombre agregado
+  ];
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -36,41 +36,69 @@ class _HomePageState extends State<HomePage> {
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           leading: Padding(
-            padding: const EdgeInsets.only(left:24.0),
-            child: IconButton(icon: Icon(Icons.menu, color: Colors.grey[800], size: 36), onPressed: () { print('Botón de menú'); },),
+            padding: const EdgeInsets.only(left: 24.0),
+            child: IconButton(
+              icon: Icon(Icons.menu, color: Colors.grey[800], size: 36),
+              onPressed: () {
+                print('Botón de menú');
+              },
+            ),
           ),
-          actions: [Padding(
-            padding: const EdgeInsets.only(right:24.0),
-            child: IconButton(icon: Icon(Icons.person, color:Colors.grey[800],size: 36), onPressed: () { print('Botón de Usuario'); },),
-          )],
-          ),
-          body: Column(children: [
-            //Texto "I Want To Eat"
+          actions: [
+            Padding(
+              padding: const EdgeInsets.only(right: 24.0),
+              child: IconButton(
+                icon: Icon(Icons.person, color: Colors.grey[800], size: 36),
+                onPressed: () {
+                  print('Botón de Usuario');
+                },
+              ),
+            )
+          ],
+        ),
+        body: Column(
+          children: [
+            // Texto "I Want To Eat"
             const Padding(
               padding: EdgeInsets.all(24.0),
               child: Row(
                 children: [
-                  Text('I Want to ', style: TextStyle(fontSize: 32),),
-                  Text('Eat', style: TextStyle(fontSize: 32, fontWeight:FontWeight.bold, decoration: TextDecoration.underline),),
+                  Text(
+                    'I Want to ',
+                    style: TextStyle(fontSize: 32),
+                  ),
+                  Text(
+                    'Eat',
+                    style: TextStyle(
+                      fontSize: 32,
+                      fontWeight: FontWeight.bold,
+                      decoration: TextDecoration.underline,
+                    ),
+                  ),
                 ],
               ),
             ),
-            //Tap bar
+            // Tab bar
             TabBar(tabs: myTabs),
-            //Tap bar view
-            Expanded(child: TabBarView(children: [
-              //Donut
-              DonutTab(),
-              //Burger
-              BurgerTab(),
-              //Smoothie
-              SmoothieTab(),
-              //Pancake
-              PancakeTab(),
-              //Pizza
-              PizzaTab(),
-            ]),)
-          ]),
+            // Tab bar view
+            Expanded(
+              child: TabBarView(
+                children: [
+                  // Donut
+                  DonutTab(),
+                  // Burger
+                  BurgerTab(),
+                  // Smoothie
+                  SmoothieTab(),
+                  // Pancake
+                  PancakeTab(),
+                  // Pizza
+                  PizzaTab(),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
