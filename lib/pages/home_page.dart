@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
-
+import 'package:provider/provider.dart';
 import '../utils/my_tab.dart';
 import '../tab/burger_tab.dart';
 import '../tab/donut_tab.dart';
-import '../tab/pizza_tab.dart';
 import '../tab/pancake_tab.dart';
+import '../tab/pizza_tab.dart';
 import '../tab/smoothie_tab.dart';
+import '../utils/cart.dart';
+import '../pages/cart_page.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+  const HomePage({Key? key}) : super(key: key);
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -16,16 +18,11 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   List<Widget> myTabs = [
-    // Donut Tab
-    const MyTab(iconPath: 'lib/icons/donut.png', tabName: 'Donuts'), // Nombre agregado
-    // Burger Tab
-    const MyTab(iconPath: 'lib/icons/burger.png', tabName: 'Burgers'), // Nombre agregado
-    // Smoothie Tab
-    const MyTab(iconPath: 'lib/icons/smoothie.png', tabName: 'Smoothies'), // Nombre agregado
-    // Pancake Tab
-    const MyTab(iconPath: 'lib/icons/pancakes.png', tabName: 'Pancakes'), // Nombre agregado
-    // Pizza Tab
-    const MyTab(iconPath: 'lib/icons/pizza.png', tabName: 'Pizza'), // Nombre agregado
+    const MyTab(iconPath: 'lib/icons/donut.png', label: 'Donuts'),
+    const MyTab(iconPath: 'lib/icons/burger.png', label: 'Burgers'),
+    const MyTab(iconPath: 'lib/icons/smoothie.png', label: 'Smoothies'),
+    const MyTab(iconPath: 'lib/icons/pancakes.png', label: 'Pancakes'),
+    const MyTab(iconPath: 'lib/icons/pizza.png', label: 'Pizzas'),
   ];
 
   @override
@@ -35,12 +32,13 @@ class _HomePageState extends State<HomePage> {
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.transparent,
+          elevation: 0,
           leading: Padding(
             padding: const EdgeInsets.only(left: 24.0),
             child: IconButton(
               icon: Icon(Icons.menu, color: Colors.grey[800], size: 36),
               onPressed: () {
-                print('Botón de menú');
+                // Implement menu functionality
               },
             ),
           ),
@@ -50,25 +48,24 @@ class _HomePageState extends State<HomePage> {
               child: IconButton(
                 icon: Icon(Icons.person, color: Colors.grey[800], size: 36),
                 onPressed: () {
-                  print('Botón de Usuario');
+                  // Implement profile functionality
                 },
               ),
-            )
+            ),
           ],
         ),
         body: Column(
           children: [
-            // Texto "I Want To Eat"
             const Padding(
               padding: EdgeInsets.all(24.0),
               child: Row(
                 children: [
                   Text(
-                    'I Want to ',
+                    'I want to ',
                     style: TextStyle(fontSize: 32),
                   ),
                   Text(
-                    'Eat',
+                    'GRACIAS POR VER',
                     style: TextStyle(
                       fontSize: 32,
                       fontWeight: FontWeight.bold,
@@ -84,18 +81,79 @@ class _HomePageState extends State<HomePage> {
             Expanded(
               child: TabBarView(
                 children: [
-                  // Donut
                   DonutTab(),
-                  // Burger
                   BurgerTab(),
-                  // Smoothie
                   SmoothieTab(),
-                  // Pancake
                   PancakeTab(),
-                  // Pizza
                   PizzaTab(),
                 ],
               ),
+            ),
+            // Cart summary
+            Consumer<Cart>(
+              builder: (context, cart, child) {
+                return Container(
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius:
+                        const BorderRadius.vertical(top: Radius.circular(20)),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.5),
+                        spreadRadius: 5,
+                        blurRadius: 7,
+                        offset: const Offset(0, 3),
+                      ),
+                    ],
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            '${cart.itemCount} Items | \$${cart.totalPrice.toStringAsFixed(2)}',
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
+                              color: Colors.black,
+                            ),
+                          ),
+                          Text(
+                            'Delivery Charges included',
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: Colors.grey[600],
+                            ),
+                          ),
+                        ],
+                      ),
+                      ElevatedButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => CartPage()),
+                          );
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.red,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30),
+                          ),
+                        ),
+                        child: const Text(
+                          'View Cart',
+                          style: TextStyle(
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              },
             ),
           ],
         ),
